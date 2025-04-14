@@ -1,0 +1,245 @@
+<!-- To avoid displaying data to unauthorized user other than  staff-->
+{% if user.is_authenticated and user.is_staff and user.is_superuser%}
+<title>Inventory Management-Dashboard</title>
+{% include 'partials/sidebar.html' %}
+{% include 'partials/topbar.html' %}
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+
+            <!-- Staff Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold mb-1"><a href="{% url 'dashboard-staff' %}" class="text-success">STAFF</a></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ staff_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user-friends fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prooduct Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1"><a href="{% url 'dashboard-products' %}" class="text-info">Products</a></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ product_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-box-open fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orders Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1"><a href="{% url 'dashboard-orders' %}" class="text-warning">Orders</a></div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ order_count }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-cart-arrow-down fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1"><a href="{% url 'dashboard-orders' %}" class="text-secondary">Customers</a></div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ customer_count }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+
+          <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-xl-6 col-lg-6">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+                </div>
+                <div class="card-body">
+                  <div class="chart-bar">
+                    <canvas id="myBarChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              <!-- Pie Chart -->
+              <div class="col-xl-6 col-lg-6">
+                <div class="card shadow mb-4">
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Orders</h6>
+                  </div>
+                  <!-- Card Body -->
+                  <div class="card-body">
+                    <div class="chart-pie">
+                      <canvas id="myPieChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>            
+          </div>
+
+          <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-xl-6 col-lg-6">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Sales</h6>
+                </div>
+                <div class="card-body">
+                  <div class="chart-bar">
+                    <canvas id="lineChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+{%else%}
+{% include 'dashboard/staff_index.html' %}
+{% endif %}
+
+  </div>
+        <!-- .container-fluid -->
+
+{% include 'partials/footer.html' %}
+
+<script>
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
+
+  var dynamicColors = function() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+};
+
+
+// Pie Chart Example
+var ctx = document.getElementById("myPieChart");
+var myPieChart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: [{% for orders in order %}'{{orders.product.name}}',{% endfor %}],
+    datasets: [{
+      data: [{% for orders in order %}'{{orders.order_quantity}}',{% endfor %}],
+      backgroundColor: Array.from({length: '{{order}}'.length}, () => dynamicColors()),
+      hoverBorderColor: Array.from({length: '{{order}}'.length}, () => dynamicColors()),
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+    },
+    legend: {
+      display: true
+    },
+    cutoutPercentage: 80,
+  },
+});
+
+
+/*Bar Chart Example*/
+var ctx = document.getElementById('myBarChart');
+  var myBarChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [{% for item in items %}'{{item.name}}',{% endfor %}],
+          datasets: [{
+            label: 'Products',
+            data: [{% for item in items %}'{{item.quantity}}',{% endfor %}],
+            backgroundColor: Array.from({length: '{{items}}'.length}, () => dynamicColors()),
+            borderColor: Array.from({length: '{{items}}'.length}, () => dynamicColors()),
+            borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          }
+      }
+  });
+
+var ctxL = document.getElementById("lineChart").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+  type: 'line',
+  data: {
+    labels: [{% for customer in customer %}'{{customer.product}}',{% endfor %}],
+    datasets: [{
+      data: [{% for customer in customer %}'{{customer.quantity}}',{% endfor %}],
+      backgroundColor: [
+        'rgba(105, 0, 132, .2)',
+      ],
+      borderColor: [
+        'rgba(200, 99, 132, .7)',
+      ],
+      borderWidth: 2
+    },
+    ]
+  },
+  options: {
+    responsive: true
+  }
+});
+
+</script>

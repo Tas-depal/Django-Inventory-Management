@@ -1,0 +1,124 @@
+<title>Inventory Management-Products</title>
+{% include 'partials/sidebar.html' %}
+{% include 'partials/topbar.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+      <!-- Page Heading -->
+	  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+	    <h1 class="h3 mb-0 text-gray-800">PRODUCTS</h1>
+	    <a href="{% url 'export_product_xls'%}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+	  </div>
+
+	  <div class="container-xl">
+		  <div class="table-responsive">
+			<div class="table-wrapper">
+				<div class="table-title">
+					<div class="row">
+						<div class="col-sm-4">
+							<h4>Product Table</h4>
+						</div>
+						<div class ="col-sm-4">
+						{% for message in messages %}
+	                	{% if message %}
+                        <div class ="alert alert-{{message.tags}}">
+                        	{{message}}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+						</div>
+						<div class="col-sm-4">
+							<a href="#addProductModal" class="btn btn-success fas fa-user-plus" data-toggle="modal"><i class="fas fa-plus"></i> <span> Add New Product</span></a>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped table-hover table-bordered" id="dataTable">
+					<thead>
+						<tr>
+	                        <th>Name</th>
+	                        <th>Category</th>
+	                        <th>Quantity</th>						
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in items %}
+						<tr>
+		                        <td>{{ item.name }}</td>
+		                        <td>{{ item.category }}</td>
+		                        <td>{{ item.quantity }}</td>                        
+							<td>
+								<a href="{% url 'dashboard-product-update' item.id %}" class="btn btn-info"  style="color:white">Edit</a>
+								<a href="{% url 'dashboard-product-delete' item.id %}" class="btn btn-danger" style="color:white">Delete</a>
+							</td>
+						</tr>
+						{%endfor%}
+					</tbody>
+				</table>
+			</div>
+		  </div>        
+	  </div>
+
+
+	  <!-- Add Modal HTML -->
+
+
+		<div id="addProductModal" class="modal fade">
+		  	<div class="modal-dialog">
+		  		<div class="modal-content">
+	               
+	                <form class="user" method="POST" enctype='multipart/form-data'>
+						<div class="modal-header">						
+							<h4 class="modal-title">Add Product</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						</div>
+						<div class="modal-body">
+
+			                {% csrf_token %}
+			                {{form|crispy}}
+				                
+						</div>
+	             
+	                    <!-- End Modal Body -->
+
+	                    <div class="modal-footer">
+							<input type="submit" class="btn btn-default" value="Cancel">
+							<input type="submit" class="btn btn-success" value="Add">		
+						</div>
+					</form>
+		  		</div>
+		  	</div>
+		</div>
+
+	{% include 'partials/footer.html' %}
+
+	<script>
+		$(document).ready(function(){
+			// Activate tooltip
+			$('[data-toggle="tooltip"]').tooltip();
+			
+			// Select/Deselect checkboxes
+			var checkbox = $('table tbody input[type="checkbox"]');
+			$("#selectAll").click(function(){
+				if(this.checked){
+					checkbox.each(function(){
+						this.checked = true;                        
+					});
+				} else{
+					checkbox.each(function(){
+						this.checked = false;                        
+					});
+				} 
+			});
+			checkbox.click(function(){
+				if(!this.checked){
+					$("#selectAll").prop("checked", false);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

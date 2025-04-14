@@ -1,0 +1,68 @@
+{%load static%}
+
+{% include 'partials/sidebar.html' %}
+
+{% include 'partials/topbar.html' %}
+
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css">
+
+
+    <section>
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card mb-4 mb-xl-0">
+              <div class="card-header">Profile Picture</div>
+              <div class="card-body text-center">
+                  <!-- Profile picture image-->
+                  <img class="img-account-profile rounded-circle mb-2 avatar" src="{{ user.profile.image.url }}" onerror="this.src='../media/avatar.png'">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Full Name</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{staff.username}}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Email</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{staff.email}}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Mobile</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{staff.profile.phone}}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Address</p>
+                  </div>
+                  <div class="col-sm-9 mb-4">
+                    <p class="text-muted mb-0">{{user.profile.address}}</p>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% include 'partials/footer.html'%}
+
+</body>
+
+</html>

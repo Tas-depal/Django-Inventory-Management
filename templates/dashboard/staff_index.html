@@ -1,0 +1,151 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title></title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+  	{% include 'partials/topbar.html' %}
+    <div class="container-fluid">
+        
+        <div class="row">        	        
+		    <div class="container-xl mb-5 col-lg-2"></div>
+	        <div class="container-xl mb-5 col-lg-8">
+			    <div class="table-responsive">
+			        <div class="table-wrapper">
+			            <div class="table-title">
+			                <div class="row">
+			                    <div class="col-sm-8 mb-3">
+			                        <h4><b><u>Order Details</u></b></h4>
+			                    </div>
+			                    <div class="col-sm-4">
+									<a href="#makeRequest" class="btn btn-info" data-toggle="modal"> Make New Request</a>
+
+								</div>
+			                </div>
+			            </div>
+			            <table class="table table-hover table-bordered"  id="dataTable">
+			                <thead>
+		                    <tr class="table-warning">
+		                        <th>Product</th>
+		                        <th>Category</th>
+		                        <th>Quantity</th>						
+		                        <th>Date</th>						
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                	{% for order in order %}
+		                	{% if order.staff == user %}
+		                    <tr>
+		                        <td>{{order.product}}</td>
+		                        <td>{{order.product.category}}</td>
+		                        <td>{{order.order_quantity}}</td>                        
+		                        <td>{{order.date}}</td>                        
+		                    </tr>
+		                    {% endif %}
+		                    {% endfor %}
+		                </tbody>
+			            </table>
+			        </div>
+			    </div>        
+			</div>
+		    <div class="container-xl mb-5 col-lg-2"></div>
+		</div>
+
+        <div class="row">		
+
+			<div class="col-lg-2 d-none d-lg-block"></div>
+			<div class="container-xl col-lg-8">
+			  <div class="table-responsive">
+				<div class="table-wrapper">
+					<div class="table-title">
+						<div class="row">
+							<div class="col-sm-6">
+								<h4><b><u>Product Details</u></b></h4>
+							</div>
+						</div>
+					</div>
+					<table class="table table-hover table-bordered" id="dataTable1">
+						<thead>
+						<tr class="table-info">
+              <th>Name</th>
+              <th>Category</th>
+              <th>Quantity</th>						
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in items %}
+						<tr>
+              <td>{{ item.name }}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.quantity }}</td>                        
+						</tr>
+						{%endfor%}
+					</tbody>
+				</table>
+				</div>
+			  </div>        
+		    </div>
+		    <div class="col-lg-2 d-none d-lg-block"></div>
+
+		</div>
+
+	</div>
+
+	<!-- Add Modal HTML -->
+
+<div id="makeRequest" class="modal fade">
+  	<div class="modal-dialog">
+  		<div class="modal-content">
+           
+            <form class="user" method="POST">
+				<div class="modal-header">						
+					<h4 class="modal-title">Make Request</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+
+	                {% csrf_token %}
+	                {{form|crispy}}
+		                
+				</div>
+         
+                <!-- End Modal Body -->
+
+                <div class="modal-footer">
+					<input type="submit" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input type="submit" class="btn btn-success" value="Submit">		
+				</div>
+			</form>
+  		</div>
+  	</div>
+</div>
+
+  	

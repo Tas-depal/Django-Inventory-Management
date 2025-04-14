@@ -1,0 +1,55 @@
+{%load static%}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Update Profile</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id='page-top'>
+
+
+<div class="container-xl px-4 mt-4">
+{% include 'partials/topbar.html' %}
+    <div class="row">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Update Profile</div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{user_form|crispy}}
+                        {{profile_form|crispy}}
+                        <input type="submit" class='btn btn-info' value="Update">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2"></div>
+    </div>
+</div>
+
+  {% include 'partials/footer.html'%}
+
+</body>
+
+</html>

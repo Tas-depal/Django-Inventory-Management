@@ -1,0 +1,91 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Profile</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id='page-top'>
+
+{% include 'partials/topbar.html' %}
+
+    <section style="background-color: #eee;">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card mb-4 mb-xl-0">
+              <div class="card-header">Profile Picture</div>
+              <div class="card-body text-center">
+                  <!-- Profile picture image-->
+                  <img class="img-account-profile rounded-circle mb-2 avatar" src="{{ user.profile.image.url }}" onerror="this.src='../media/avatar.png'">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Full Name</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{user.username}}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Email</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{user.email}}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Mobile</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{user.profile.phone}}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Address</p>
+                  </div>
+                  <div class="col-sm-9 mb-4">
+                    <p class="text-muted mb-0">{{user.profile.address}}</p>
+                  </div>
+                </div>
+                <a class="btn btn-primary" type="button" href="{%url 'user-profile-update'%}">Edit</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% include 'partials/footer.html'%}
+
+</body>
+
+</html>
